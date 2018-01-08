@@ -11,7 +11,7 @@ interface IBootstrapColor {
   danger: string;
   dark: string;
   gray: string;
-  graydark: string;
+  grayDark: string;
   green: string;
   indigo: string;
   info: string;
@@ -49,7 +49,7 @@ class BootstrapColor {
         let str = lines[index].replace(/--/g, '"');
         str = str.replace(/:\s*#/g, '":"#');
         str = str.replace(/;/g, '"');
-        str = str.replace(/-/g, '');
+        str = str.replace(/gray-dark/g, 'grayDark');
         str = str.trim();
         colors.push(str);
       }
