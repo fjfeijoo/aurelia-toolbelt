@@ -5,25 +5,38 @@ import { HttpClient } from 'aurelia-http-client';
 import * as $ from 'jquery';
 import 'metismenu';
 
-interface IBootstrapColors {
-  white: string;
+interface IBootstrapColor {
+  blue: string;
+  cyan: string;
+  danger: string;
+  dark: string;
+  gray: string;
+  graydark: string;
+  green: string;
+  indigo: string;
+  info: string;
+  light: string;
+  muted: string;
+  orange: string;
+  pink: string;
   primary: string;
+  purple: string;
+  red: string;
   secondary: string;
   success: string;
-  info: string;
+  teal: string;
   warning: string;
-  danger: string;
-  light: string;
-  dark: string;
+  white: string;
+  yellow: string;
 }
 
 @inject(HttpClient)
 @singleton()
-class BootstrapColors {
+class BootstrapColor {
 
   constructor(private http: HttpClient) { }
 
-  public getCssColors(text: string): IBootstrapColors {
+  public getColors(text: string): IBootstrapColor {
     let key = ':root';
     let startIndex = text.indexOf(key) + key.length;
     let endIndex = text.indexOf('}', startIndex);
@@ -36,29 +49,33 @@ class BootstrapColors {
         let str = lines[index].replace(/--/g, '"');
         str = str.replace(/:\s*#/g, '":"#');
         str = str.replace(/;/g, '"');
+        str = str.replace(/-/g, '');
         str = str.trim();
         colors.push(str);
       }
     }
     rule = colors.join(',');
     rule = '{' + rule + '}';
-    let obj = <IBootstrapColors>JSON.parse(rule);
+    let obj = <IBootstrapColor>JSON.parse(rule);
+    if (Object.keys(obj).length > 0) {
+      obj.muted = obj.gray;
+    }
     return obj;
   }
 
-  public getCssColorsByPath(path: string): IBootstrapColors {
-    let result: IBootstrapColors;
+  public getColorsByPath(path: string): IBootstrapColor {
+    let result: IBootstrapColor;
     if (path && path.length > 0) {
       this.http.get(path)
         .then((data) => {
-          result = this.getCssColors(data.response);
+          result = this.getColors(data.response);
           return result;
         });
     }
     return result;
   }
 }
-@inject(Element, BootstrapColors)
+@inject(Element, BootstrapColor)
 @containerless()
 @customElement('aut-metis-menu')
 export class JQueryMetisMenu {
@@ -74,13 +91,13 @@ export class JQueryMetisMenu {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) public hiddenMenu: Function;
 
 
-  constructor(private element: Element, private bsColors: BootstrapColors) {
+  constructor(private element: Element, private bsColors: BootstrapColor) {
   }
 
   private attached() {
 
     // tslint:disable
-    let colors = this.bsColors.getCssColors(`
+    let colors = this.bsColors.getColors(`
     /*!
  * Bootstrap v4.0.0-beta.3 (https://getbootstrap.com)
  * Copyright 2011-2017 The Bootstrap Authors
