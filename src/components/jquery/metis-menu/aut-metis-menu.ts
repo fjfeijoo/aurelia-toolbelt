@@ -117,9 +117,10 @@ export class JQueryMetisMenu {
           {
             background: ${colors.dark} !important;
           }
-          .sidebar-nav .metismenu a:hover,
-          .sidebar-nav .metismenu a:focus,
-          .sidebar-nav .metismenu a:active {
+          .sidebar-nav .metismenu a:not(.aut-mm-link-group):hover,
+          .sidebar-nav .metismenu a:not(.aut-mm-link-group):focus,
+          .sidebar-nav .metismenu a:not(.aut-mm-link-group):active {
+            text-decoration: none;
             color: ${this.themeType === 'light' ? 'cyan' : 'red'} !important;
               background: ${colors.primary} !important;
             }
