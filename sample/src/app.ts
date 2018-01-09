@@ -2,7 +2,6 @@ import { Router, RouterConfiguration } from 'aurelia-router';
 import { PLATFORM, bindable, inject, singleton } from 'aurelia-framework';
 import { HttpClient } from 'aurelia-http-client';
 import { EventAggregator } from 'aurelia-event-aggregator';
-
 import { IBootstrapColor } from '../../src/components/jquery/metis-menu/IBootstrapColors';
 
 class Theme {
@@ -25,6 +24,12 @@ class BootstrapColor {
     let endIndex = text.indexOf('}', startIndex);
     let rule = text.slice(startIndex, endIndex).toString();
     let lines = rule.split('\n');
+    if (lines.length === 1) {
+      lines = rule.split(';');
+      for (let index = 0; index < lines.length; index++) {
+        lines[index] += ';';
+      }
+    }
     let colors = new Array();
     for (let index = 0; index < lines.length; index++) {
       let isColor = lines[index].indexOf('#') !== -1;
@@ -32,6 +37,8 @@ class BootstrapColor {
         let str = lines[index].replace(/--/g, '"');
         str = str.replace(/:\s*#/g, '":"#');
         str = str.replace(/;/g, '"');
+        str = str.replace(/{/g, '');
+        str = str.replace(/}/g, '');
         str = str.replace(/gray-dark/g, 'grayDark');
         str = str.trim();
         colors.push(str);
