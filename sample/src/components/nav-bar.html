@@ -4,10 +4,11 @@
 
   <nav class="sidebar-nav">
 
-    <aut-metis-menu show-menu.call="showMenu()">
+    <aut-metis-menu show-menu.call="showMenu()" colors.bind="color" theme-type.bind="themeType">
 
       <aut-metis-menu-group active="true" icon-class="sidebar-nav-item-icon fa fa-github fa-lg" text="Components">
-        <aut-metis-menu-item repeat.for="r of router.navigation" if.bind="r.settings.isComponent" href="${r.href}">
+        <aut-metis-menu-item repeat.for="r of router.navigation" if.bind="r.settings.isComponent" class="${r.isActive ? 'aut-mm-item-active' : ''}"
+          href="${r.href}">
           <span class="sidebar-nav-item-icon fa fa-code-fork"></span>
           ${r.title}
         </aut-metis-menu-item>

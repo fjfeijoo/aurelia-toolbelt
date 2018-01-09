@@ -1,20 +1,32 @@
 import { Router } from 'aurelia-router';
 import { inject } from 'aurelia-framework';
+import { EventAggregator } from 'aurelia-event-aggregator';
 // declare var $: any;
 
-@inject(Router)
+@inject(Router, EventAggregator)
 export class NavBar {
-    public router: Router;
+  public router: Router;
 
-    constructor(router: Router) {
-        this.router = router;
-    }
+  private color;
+  private themeType;
 
-    public attached() {
-        // todo
-    }
-    private showMenu() {
-        alert('hi');
-    }
+  constructor(router: Router, ea: EventAggregator) {
+    this.router = router;
+
+    ea.subscribe('theme-changed', x => {
+      console.warn(x);
+      this.color = x.bsColors;
+      this.themeType = x.theme;
+
+    });
+
+  }
+
+  public attached() {
+    // todo
+  }
+  private showMenu() {
+    alert('hi');
+  }
 
 }
